@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { UserController } from './apis/users.controller';
 import { VideoController } from './apis/video.controller';
 import { ImageController } from './apis/image.controller';
+import { ImageService } from './core/services/image.services';
+import { VideoStremingService } from './core/services/video.service';
 // import { UsersModule } from './users/users.module';
 
 @Module({
@@ -18,7 +20,7 @@ import { ImageController } from './apis/image.controller';
     VideoController,
     ImageController,
   ],
-  providers: [AppService],
+  providers: [AppService, ImageService, VideoStremingService],
   exports: [],
 })
 export class AppModule { }
