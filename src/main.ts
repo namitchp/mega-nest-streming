@@ -28,18 +28,26 @@ async function bootstrap() {
   // Sharp('image.jpg').
   // app.use('/')
   const imagePath = join(__dirname, '../uploads');
+  let transformedImage = sharp(imagePath + '/image.jpg', { failOn: 'none', animated: true });
+  const imageMetadata = await transformedImage.metadata();
+  const resizingOptions = { with: 100, height: 100 };
+  // if (operationsJSON['width']) resizingOptions.width = parseInt(operationsJSON['width']);
+  // if (operationsJSON['height']) resizingOptions.height = parseInt(operationsJSON['height']);
+  // if (resizingOptions) 
+  transformedImage = transformedImage.resize(resizingOptions);
 
-  // const transformedImage = sharp(imagePath)
-  //   .resize(200, 500)
-  //   .toFormat('png')
-  //   .toFile(join(__dirname, '../uploads/i.png'))
-  //   .toBuffer();
-  sharp(imagePath + '/image.jpg')
-    .resize(420, 540)
-    .toFormat('png', { quality: 100 })
-    .toFile(imagePath + '/namit.png', (err, info) => {
-      console.log(info);
-    });
+  // console.log('metadata:', imageMetadata);
+  // console.log('transformedImage:', transformedImage);
+  if (imageMetadata.orientation)
+    transformedImage = transformedImage.rotate();
+  // console.log('transformedImage:', transformedImage);
+
+  // sharp(imagePath + '/image.jpg')
+  //   .resize(420, 540)
+  //   .toFormat('png', { quality: 100 })
+  //   .toFile(imagePath + '/namit.png', (err, info) => {
+  //     console.log(info);
+  //   });
   // console.log('semiTransparentRedPng:', transformedImage);
   // console.log('sharpData:', sharpData);
   await app.listen(process.env.PORT ?? 3000);

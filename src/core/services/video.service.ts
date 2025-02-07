@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class StremingService {
+export class VideoStremingService {
     getHello(): string {
         return 'Helldvfgfbgfvo Namit!';
     }
