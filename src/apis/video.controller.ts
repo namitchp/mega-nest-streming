@@ -1,10 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get } from "@nestjs/common";
 // import { StremingService } from 'src/core/services/video.service';
-@Controller('/video')
+@Controller("/video")
 export class VideoController {
-    //  constructor(private readonly stremingService: StremingService) { }
-    @Get()
-    async getVideo() {
-        return 'rfghj';
-    }
+  //  constructor(private readonly stremingService: StremingService) { }
+  @Get()
+  async getVideo() {
+    return "rfghj";
+  }
 }
