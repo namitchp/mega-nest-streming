@@ -1,7 +1,7 @@
 import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { ImageService } from '../core/services/image.services';
 import { VideoStremingService } from '../core/services/video.service';
-import { , Request, Response } from 'express';
+import { Response } from 'express';
 interface GetImage {
     name: string,
     width: number,
