@@ -1,18 +1,26 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { ImageService } from '../core/services/image.services';
 import { VideoStremingService } from '../core/services/video.service';
-import { Request } from 'express';
+import { , Request, Response } from 'express';
+interface GetImage {
+    name: string,
+    width: number,
+    height: number,
+    quality: number,
+    format: string,
+}
+
 @Controller('/image')
 export class ImageController {
     constructor(
         private imageService: ImageService,
         private readonly videoStremingService: VideoStremingService,
     ) { }
-    @Get('')
-    imageCompress(@Req() req: Request): any {
-        console.log(req.query);
-        return this.imageService.imageCompress(req.query);
 
+    @Get('')
+    imageCompress(@Query() query: GetImage, @Res() res: Response): any {
+
+        return this.imageService.imageGet(query, res);
         // return { message: 'Image Compressed' };
     }
     @Get('/video')
