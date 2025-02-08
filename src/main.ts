@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(json({ limit: "50mb" }));
   app.use(urlencoded({ limit: "50mb", extended: false }));
-  app.use(serveStatic(join(__dirname, "../uploads")));
+  // app.use(serveStatic(join(__dirname, "../uploads")));
   // sharp('src/assets/1.jpg');
   // exec('ls -l', (err, stdout, stderr) => {
 
