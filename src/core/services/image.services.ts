@@ -1,12 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { parse } from 'path';
+import { HttpCode, HttpStatus, Injectable } from '@nestjs/common';
 import * as sharp from 'sharp';
 import { CommonFunction } from 'src/helpers/common';
 interface GetImage {
     name: string;
-    width: number;
-    height: number;
-    quality: number;
+    width: string;
+    height: string;
+    quality: string;
     format: string;
 }
 @Injectable()
@@ -17,8 +16,12 @@ export class ImageService extends CommonFunction {
             return this.transformedImage(imagePath.message, res);
         } else {
             const imagePath = super.fileAccess(query, 'original');
-
-            return this.originalImage(query, imagePath, res);
+            console.log(imagePath);
+            if (imagePath.valid) {
+                return this.transformedImage(imagePath.message, res);
+            } else {
+                res.status(HttpStatus.NOT_FOUND).send({ message: 'Image not found' });
+            }
         }
     }
     async originalImage(query: GetImage, imagePath: any, res: any): Promise<any> {
@@ -62,9 +65,19 @@ export class ImageService extends CommonFunction {
         };
         transformedImage = transformedImage.resize(resizingOptions);
         if (imageMetadata.orientation) transformedImage = transformedImage.rotate();
-        transformedImage.toFormat(contentType as keyof sharp.FormatEnum, {
-            quality: parseInt(query.quality.toString()),
-        });
+        if (query.quality !== 'auto' && isLossy) {
+            transformedImage = transformedImage.toFormat(
+                contentType as keyof sharp.FormatEnum,
+                { quality: parseInt(query.quality.toString()) },
+            );
+        } else {
+            transformedImage = transformedImage.toFormat(
+                contentType as keyof sharp.FormatEnum,
+            );
+        }
+        // transformedImage = transformedImage.toFormat(contentType as keyof sharp.FormatEnum, {
+        //     quality: parseInt(query.quality.toString()),
+        // });
         const directoryPathTransformed = this.fetchDirectory('transformed');
         transformedImage.toFile(
             `${directoryPathTransformed}/${imagePath.fileName}`,

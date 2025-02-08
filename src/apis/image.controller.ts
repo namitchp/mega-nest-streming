@@ -4,9 +4,9 @@ import { VideoStremingService } from '../core/services/video.service';
 import { Response } from 'express';
 interface GetImage {
     name: string,
-    width: number,
-    height: number,
-    quality: number,
+    width: string,
+    height: string,
+    quality: string,
     format: string,
 }
 
