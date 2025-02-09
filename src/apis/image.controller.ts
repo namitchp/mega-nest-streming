@@ -1,12 +1,12 @@
 import { Controller, Get, Query, Req, Res } from '@nestjs/common';
-import { ImageService } from '../core/services/image.services';
+import { ImageService } from '../core/services/image.service';
 import { VideoStremingService } from '../core/services/video.service';
 import { Response } from 'express';
 interface GetImage {
     name: string,
-    width: number,
-    height: number,
-    quality: number,
+    width: string,
+    height: string,
+    quality: string,
     format: string,
 }
 
@@ -22,9 +22,5 @@ export class ImageController {
 
         return this.imageService.imageGet(query, res);
         // return { message: 'Image Compressed' };
-    }
-    @Get('/video')
-    getHello(): string {
-        return this.videoStremingService.getHello();
     }
 }

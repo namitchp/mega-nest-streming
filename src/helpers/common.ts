@@ -1,5 +1,8 @@
-import { join } from 'path';
+import path, { join } from 'path';
 import * as fs from 'fs';
+import { diskStorage } from 'multer';
+import { Injectable } from '@nestjs/common';
+@Injectable()
 export class CommonFunction {
     fetchDirectory(type: string) {
         const imagePath = join(__dirname, `../../uploads/${type}`);
@@ -17,4 +20,5 @@ export class CommonFunction {
             return { message: accessFolder, valid: false, fileName };
         }
     }
+
 }
