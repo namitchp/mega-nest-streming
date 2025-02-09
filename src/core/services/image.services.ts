@@ -1,6 +1,8 @@
-import { HttpCode, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { join } from 'path';
 import * as sharp from 'sharp';
-import { CommonFunction } from 'src/helpers/common';
+// import { CommonFunction } from 'src/helpers/common';
+import * as fs from 'fs';
 interface GetImage {
     name: string;
     width: string;
@@ -9,24 +11,23 @@ interface GetImage {
     format: string;
 }
 @Injectable()
-export class ImageService extends CommonFunction {
+// export class ImageService extends CommonFunction {
+export class ImageService {
     imageGet(query: GetImage, res: any): any {
-        const imagePath = super.fileAccess(query, 'transformed');
+        const imagePath = this.fileAccess(query, 'transformed');
         if (imagePath.valid) {
-            return this.transformedImage(imagePath.message, res);
+            return this.transformedImageFun(imagePath.message, res);
         } else {
-            const imagePath = super.fileAccess(query, 'original');
+            const imagePath = this.fileAccess(query, 'original');
             console.log(imagePath);
             if (imagePath.valid) {
-                return this.transformedImage(imagePath.message, res);
+                return this.originalImage(query, imagePath, res);
             } else {
                 res.status(HttpStatus.NOT_FOUND).send({ message: 'Image not found' });
             }
         }
     }
     async originalImage(query: GetImage, imagePath: any, res: any): Promise<any> {
-        //    const imagePath = super.fileAccess(query, 'original');
-        console.log(imagePath);
         let contentType: string;
         let isLossy: boolean = false;
         switch (query.format) {
@@ -62,6 +63,9 @@ export class ImageService extends CommonFunction {
         const resizingOptions = {
             width: +query.width,
             height: +query.height,
+            fit: sharp.fit.contain,
+            position: sharp.strategy.attention,
+            background: 'red',
         };
         transformedImage = transformedImage.resize(resizingOptions);
         if (imageMetadata.orientation) transformedImage = transformedImage.rotate();
@@ -79,13 +83,16 @@ export class ImageService extends CommonFunction {
         //     quality: parseInt(query.quality.toString()),
         // });
         const directoryPathTransformed = this.fetchDirectory('transformed');
-        transformedImage.toFile(
+        const transformedImageBuffer = await transformedImage.toBuffer();
+        sharp(transformedImageBuffer).toFile(
             `${directoryPathTransformed}/${imagePath.fileName}`,
-            (err, info) => {
+            (err) => {
                 if (err) {
-                    console.log(err);
+                    res
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .send({ message: 'Image not found' });
                 }
-                this.transformedImage(
+                this.transformedImageFun(
                     `${directoryPathTransformed}/${imagePath.fileName}`,
                     res,
                 );
@@ -93,11 +100,29 @@ export class ImageService extends CommonFunction {
         );
     }
 
-    transformedImage(imagePath: string, res: any): any {
+    transformedImageFun(imagePath: string, res: any): any {
         return res.sendFile(imagePath, (err: any) => {
             if (err) {
                 res.status(404).send('Image not found');
             }
         });
+    }
+
+
+    fetchDirectory(type: string) {
+        const imagePath = join(__dirname, `../../../uploads/${type}`);
+        return imagePath;
+    }
+
+    fileAccess(reqObj: any, type: string): any {
+        const fileName: string = `name=${reqObj.name}&width=${reqObj.width}&height=${reqObj.height}&quality=${reqObj.quality}.${reqObj.format}`;
+        const accessFolder = `${this.fetchDirectory(type)}/${type === 'original' ? reqObj.name : fileName}`;
+        // const imagePath = join(__dirname, accessFolder);
+        console.log(accessFolder);
+        if (fs.existsSync(accessFolder)) {
+            return { message: accessFolder, valid: true, fileName };
+        } else {
+            return { message: accessFolder, valid: false, fileName };
+        }
     }
 }
