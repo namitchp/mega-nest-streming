@@ -19,7 +19,6 @@ export class ImageService {
             return this.transformedImageFun(imagePath.message, res);
         } else {
             const imagePath = this.fileAccess(query, 'original');
-            console.log(imagePath);
             if (imagePath.valid) {
                 return this.originalImage(query, imagePath, res);
             } else {
@@ -60,12 +59,13 @@ export class ImageService {
             animated: true,
         });
         const imageMetadata = await transformedImage.metadata();
+        console.log('imageMetadata', imageMetadata);
         const resizingOptions = {
             width: +query.width,
             height: +query.height,
-            fit: sharp.fit.contain,
-            position: sharp.strategy.attention,
-            background: 'red',
+            // fit: sharp.fit.contain,
+            // position: sharp.strategy.attention,
+            // background: 'red',
         };
         transformedImage = transformedImage.resize(resizingOptions);
         if (imageMetadata.orientation) transformedImage = transformedImage.rotate();
@@ -101,9 +101,9 @@ export class ImageService {
     }
 
     transformedImageFun(imagePath: string, res: any): any {
-        return res.sendFile(imagePath, (err: any) => {
+        return res.status(HttpStatus.OK).sendFile(imagePath, (err: any) => {
             if (err) {
-                res.status(404).send('Image not found');
+                res.status(HttpStatus.NOT_FOUND).send('Image not found');
             }
         });
     }
@@ -117,8 +117,6 @@ export class ImageService {
     fileAccess(reqObj: any, type: string): any {
         const fileName: string = `name=${reqObj.name}&width=${reqObj.width}&height=${reqObj.height}&quality=${reqObj.quality}.${reqObj.format}`;
         const accessFolder = `${this.fetchDirectory(type)}/${type === 'original' ? reqObj.name : fileName}`;
-        // const imagePath = join(__dirname, accessFolder);
-        console.log(accessFolder);
         if (fs.existsSync(accessFolder)) {
             return { message: accessFolder, valid: true, fileName };
         } else {

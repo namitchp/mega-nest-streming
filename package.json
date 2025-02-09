@@ -28,7 +28,8 @@
     "path": "^0.12.7",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
