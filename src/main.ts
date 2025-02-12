@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 // import { exec } from 'child_process';
-import * as sharp from 'sharp';
 import { json, urlencoded, static as serveStatic } from 'express';
 import { join } from 'path';
 async function bootstrap() {
