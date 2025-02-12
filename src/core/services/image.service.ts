@@ -59,7 +59,6 @@ export class ImageService {
             animated: true,
         });
         const imageMetadata = await transformedImage.metadata();
-        console.log('imageMetadata', imageMetadata);
         const resizingOptions = {
             width: +query.width,
             height: +query.height,
@@ -107,7 +106,6 @@ export class ImageService {
             }
         });
     }
-
 
     fetchDirectory(type: string) {
         const imagePath = join(__dirname, `../../../uploads/${type}`);

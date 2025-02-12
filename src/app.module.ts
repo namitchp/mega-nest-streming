@@ -7,10 +7,8 @@ import { VideoController } from "./apis/video.controller";
 import { ImageController } from "./apis/image.controller";
 import { ImageService } from "./core/services/image.service";
 import { VideoStremingService } from "./core/services/video.service";
-import { MulterModule } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
-import { basename, extname } from "path";
 import { CommonFunction } from "./helpers/common";
+import { ImageServiceS3 } from "./core/services/image.s3.service";
 // import { UsersModule } from './users/users.module';
 
 @Module({
@@ -25,7 +23,7 @@ import { CommonFunction } from "./helpers/common";
     VideoController,
     ImageController,
   ],
-  providers: [AppService, ImageService, VideoStremingService, CommonFunction],
+  providers: [AppService, ImageService, VideoStremingService, CommonFunction, ImageServiceS3],
   exports: [],
 })
 export class AppModule { }
