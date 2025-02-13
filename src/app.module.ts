@@ -9,6 +9,7 @@ import { ImageService } from "./core/services/image.service";
 import { VideoStremingService } from "./core/services/video.service";
 import { CommonFunction } from "./helpers/common";
 import { ImageServiceS3 } from "./core/services/image.s3.service";
+import { S3ConfigService } from "./core/config/s3.services";
 // import { UsersModule } from './users/users.module';
 
 @Module({
@@ -23,7 +24,7 @@ import { ImageServiceS3 } from "./core/services/image.s3.service";
     VideoController,
     ImageController,
   ],
-  providers: [AppService, ImageService, VideoStremingService, CommonFunction, ImageServiceS3],
+  providers: [AppService, ImageService, VideoStremingService, CommonFunction, ImageServiceS3, S3ConfigService],
   exports: [],
 })
 export class AppModule { }

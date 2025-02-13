@@ -3,7 +3,8 @@ import { join } from 'path';
 import * as sharp from 'sharp';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import * as fs from 'fs';
-import { s3ClientImage } from 'src/credential/aws/s3.config';
+import { S3ConfigService } from '../config/s3.services';
+
 interface GetImage {
     name: string;
     width: string;
@@ -13,13 +14,27 @@ interface GetImage {
 }
 @Injectable()
 export class ImageServiceS3 {
+    constructor(
+        private readonly s3ConfigService: S3ConfigService
+    ) { }
     async imageGetS3(query: GetImage, res: any): Promise<any> {
-        // console.log(s3ClientImage)
         const getOriginalImageCommand = new GetObjectCommand({ Bucket: 'megaprojectoriginal', Key: 'UserImage_08222024090814PM.jpg' });
-        const getOriginalImageCommandOutput = await s3ClientImage.send(getOriginalImageCommand);
+        const getOriginalImageCommandOutput = await this.s3ConfigService.client.send(
+            getOriginalImageCommand,
+        );
+
+        //     const putImageCommand = new PutObjectCommand({
+        //         Body: transformedImage,
+        //         Bucket: S3_TRANSFORMED_IMAGE_BUCKET,
+        //         Key: originalImagePath + '/' + operationsPrefix,
+        //         ContentType: contentType,
+        //         CacheControl: TRANSFORMED_IMAGE_CACHE_TTL,
+        //     })
+
+        //    const pushImage= await this.s3ConfigService.client.send(putImageCommand);
         console.log(`Got response from S3 for `);
-        console.log(getOriginalImageCommandOutput)
-        res.status(201).sendFile("hello")
+        console.log(await getOriginalImageCommandOutput.Body.transformToByteArray())
+        res.status(201).send("hello")
 
         return
 

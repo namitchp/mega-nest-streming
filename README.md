@@ -97,3 +97,26 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+<!-- 
+   Resolve the following violations before pushing again
+remote: 
+remote:     - Push cannot contain secrets
+remote: 
+remote:     
+remote:      (?) Learn how to resolve a blocked push
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
+remote:     
+remote:     
+remote:       —— Amazon AWS Access Key ID ——————————————————————————
+remote:        locations:
+remote:          - commit: d4acc37d7e9ef52dccd3fda301e70761705360ce
+remote:            path: src/credential/aws/s3.config.ts:13
+remote:          - commit: f756dbe0a1864f3cf51b0a404679f6c7eaa260bd
+remote:            path: src/credential/aws/s3.config.ts:13
+remote:     
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/namitchp/mega-nest-streming/security/secret-scanning/unblock-secret/2sva6PJuCVMkyckwEk4x0fdl43T
+remote:     
+remote:  -->
