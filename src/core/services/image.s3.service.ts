@@ -4,7 +4,6 @@ import * as sharp from 'sharp';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import * as fs from 'fs';
 import { S3ConfigService } from '../config/s3.services';
-
 interface GetImage {
     name: string;
     width: string;
