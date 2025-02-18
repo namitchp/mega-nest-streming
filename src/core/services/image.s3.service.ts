@@ -1,9 +1,10 @@
-import { HttpStatus, Injectable, Req } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { join } from 'path';
 import * as sharp from 'sharp';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand } from '@aws-sdk/client-s3';
 import * as fs from 'fs';
 import { S3ConfigService } from '../config/s3.services';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 interface GetImage {
     name: string;
     width: string;
@@ -21,7 +22,6 @@ export class ImageServiceS3 {
         const getOriginalImageCommandOutput = await this.s3ConfigService.client.send(
             getOriginalImageCommand,
         );
-
         //     const putImageCommand = new PutObjectCommand({
         //         Body: transformedImage,
         //         Bucket: S3_TRANSFORMED_IMAGE_BUCKET,
