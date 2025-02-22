@@ -106,12 +106,10 @@ export class ImageService {
             }
         });
     }
-
     fetchDirectory(type: string) {
         const imagePath = join(__dirname, `../../../uploads/${type}`);
         return imagePath;
     }
-
     fileAccess(reqObj: any, type: string): any {
         const fileName: string = `name=${reqObj.name}&width=${reqObj.width}&height=${reqObj.height}&quality=${reqObj.quality}.${reqObj.format}`;
         const accessFolder = `${this.fetchDirectory(type)}/${type === 'original' ? reqObj.name : fileName}`;
