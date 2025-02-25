@@ -13,6 +13,12 @@ interface GetImage {
 @Injectable()
 // export class ImageService extends CommonFunction {
 export class ImageService {
+
+    uploadImageServer(file: any): any {
+
+        return file
+    }
+
     imageGet(query: GetImage, res: any): any {
         const imagePath = this.fileAccess(query, 'transformed');
         if (imagePath.valid) {
