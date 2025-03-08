@@ -14,14 +14,14 @@ interface GetImage {
 }
 @Injectable()
 export class ImageServiceS3 {
-    constructor(
-        private readonly s3ConfigService: S3ConfigService
-    ) { }
+    constructor(private readonly s3ConfigService: S3ConfigService) { }
     async imageGetS3(query: GetImage, res: any): Promise<any> {
-        const getOriginalImageCommand = new GetObjectCommand({ Bucket: 'megaprojectoriginal', Key: 'UserImage_08222024090814PM.jpg' });
-        const getOriginalImageCommandOutput = await this.s3ConfigService.client.send(
-            getOriginalImageCommand,
-        );
+        const getOriginalImageCommand = new GetObjectCommand({
+            Bucket: 'megaprojectoriginal',
+            Key: 'UserImage_08222024090814PM.jpg',
+        });
+        const getOriginalImageCommandOutput =
+            await this.s3ConfigService.client.send(getOriginalImageCommand);
         //     const putImageCommand = new PutObjectCommand({
         //         Body: transformedImage,
         //         Bucket: S3_TRANSFORMED_IMAGE_BUCKET,
@@ -32,10 +32,12 @@ export class ImageServiceS3 {
 
         //    const pushImage= await this.s3ConfigService.client.send(putImageCommand);
         console.log(`Got response from S3 for `);
-        console.log(await getOriginalImageCommandOutput.Body.transformToByteArray())
-        res.status(201).send("hello")
+        console.log(
+            await getOriginalImageCommandOutput.Body.transformToByteArray(),
+        );
+        res.status(201).send('hello');
 
-        return
+        return;
 
         const imagePath = this.fileAccess(query, 'transformed');
         if (imagePath.valid) {
