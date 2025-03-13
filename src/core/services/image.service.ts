@@ -13,9 +13,7 @@ interface GetImage {
 @Injectable()
 // export class ImageService extends CommonFunction {
 export class ImageService {
-
     uploadImageServer(file: any): any {
-
         return file
     }
 
