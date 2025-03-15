@@ -1,5 +1,5 @@
-import { diskStorage } from "multer";
-import { basename, extname } from "path";
+import { diskStorage } from 'multer';
+import { basename, extname } from 'path';
 
 export function imageUpload(filePath: string, fileSize: number) {
     return {
@@ -20,9 +20,7 @@ export function imageUpload(filePath: string, fileSize: number) {
         fileFilter: function (req: any, file: any, cb: any) {
             const filetypes = /jpeg|jpg|png|pdf|mp4|audio|mp3|wav/;
             const mimetype = filetypes.test(file.mimetype);
-            const extnam = filetypes.test(
-                extname(file.originalname).toLowerCase(),
-            );
+            const extnam = filetypes.test(extname(file.originalname).toLowerCase());
             if (mimetype && extnam) {
                 return cb(null, true);
             }
@@ -35,5 +33,5 @@ export function imageUpload(filePath: string, fileSize: number) {
                 filetypes,
             );
         },
-    }
+    };
 }
